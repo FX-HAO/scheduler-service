@@ -1,0 +1,12 @@
+language: python
+rvm:
+  - 2.6
+  - 2.7
+env:
+  - FLASK_CONFIG=True
+install: "pip install -r requirements/test.txt"
+script: python manage.py test
+after_sucess:
+  - CODECLIMATE_REPO_TOKEN=32b4942d899acaebeeb1030bfa1360e71e85f4cceec4f780ec64b95ca5081b2a codeclimate-test-reporter
+notifications:
+  slack: scheduler-service:Olkw6F2rVv9pzswcokofUqNH

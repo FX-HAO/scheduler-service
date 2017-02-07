@@ -90,3 +90,5 @@ ENV/
 /.project
 
 .idea/
+
+tmp/
