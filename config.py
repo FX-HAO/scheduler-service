@@ -16,7 +16,7 @@ class DevelopmentConfig(Config):
 class TestingConfig(Config):
     TESTING = True
     SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATABASE_URL') or \
-        'postgresql://root:root@db:5432/scheduler_test'
+        'postgresql://root:root@45.32.73.52:5432/scheduler_test'
     WTF_CSRF_ENABLED = False
 
 class ProductionConfig(Config):
@@ -30,4 +30,3 @@ config = {
 
     'default': DevelopmentConfig
 }
-
