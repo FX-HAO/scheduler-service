@@ -33,6 +33,18 @@ def test(coverage=False):
         print('Coverage Summary:')
         COV.report()
 
+@manager.command
+def coverage():
+    if not os.environ.get('FLASK_CONFIG'):
+        import sys
+        os.environ['FLASK_CONFIG'] = '1'
+        os.execvp(sys.executable, [sys.executable] + sys.argv)
+    if COV:
+        COV.stop()
+        COV.save()
+        print('Coverage Summary:')
+        COV.report()
+
 if __name__ == '__main__':
     from app.models import *
     manager.run()

@@ -1,0 +1,14 @@
+---
+engines:
+  pep8:
+    enabled: true
+  fixme:
+    enabled: true
+ratings:
+  paths:
+  - "**.inc"
+  - "**.module"
+  - "**.py"
+exclude_paths:
+- tests/**
+- migrations/**

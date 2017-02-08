@@ -5,8 +5,9 @@ rvm:
 env:
   - FLASK_CONFIG=True
 install: "pip install -r requirements/test.txt"
-script: python manage.py test
+script: python -m unittest discover
 after_sucess:
-  - CODECLIMATE_REPO_TOKEN=32b4942d899acaebeeb1030bfa1360e71e85f4cceec4f780ec64b95ca5081b2a codeclimate-test-reporter
+  - python manage.py coverage
+  - CODECLIMATE_REPO_TOKEN=a968c0f73c4a389ff9a149ef3248f53f04387161a2ad94291fbd083a6e63eb16 codeclimate-test-reporter
 notifications:
   slack: scheduler-service:Olkw6F2rVv9pzswcokofUqNH
