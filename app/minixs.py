@@ -4,7 +4,7 @@ from . import db
 
 
 class CRUDMixin(object):
-    """Implements methods to create, read, updata, and delete."""
+    """Implements methods to create, read, update, and delete."""
 
     @classmethod
     def create(cls, commit=True, **kwargs):
@@ -17,9 +17,9 @@ class CRUDMixin(object):
 
     @classmethod
     def get_or_create(cls, id, commit=True, **kwargs):
-        self = cls.query.get(id) or cls(id)
-        self.update(commit=False, **kwargs)
-        return self.save(commit=commit)
+        obj = cls.query.get(id) or cls(id)
+        obj.update(commit=False, **kwargs)
+        return obj.save(commit=commit)
 
     @classmethod
     def _filter(cls, **kwargs):
@@ -32,7 +32,7 @@ class CRUDMixin(object):
     def filter_or_create(cls, commit=True, **kwargs):
         self = cls._filter(**kwargs)
         if not self:
-            self = cls.create(commit=True, **kwargs)
+            self = cls.create(commit, **kwargs)
         return self
 
     def save(self, commit=True):
@@ -58,7 +58,7 @@ class Serializer(object):
     def json(self):
 
         serialized_fields = self.serialized_fields
-        cls_serialized_fields = set([column.name for column in \
+        cls_serialized_fields = set([column.name for column in
                                      self.__class__.__table__.columns])
 
         for primary_key in inspect(self.__class__).primary_key:
@@ -69,7 +69,7 @@ class Serializer(object):
             for field in serialized_fields:
                 if field not in cls_serialized_fields:
                     raise ValueError(
-                        "The field `%s` isn't in `%s`" \
+                        "The field `%s` isn't in `%s`"
                         % (field, self.__class__.__name__)
                     )
         else:
