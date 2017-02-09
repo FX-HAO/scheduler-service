@@ -8,11 +8,13 @@ if os.environ.get('FLASK_CONFIG'):
 
 from flask.ext.script import Manager
 from flask.ext.migrate import Migrate, MigrateCommand
+from celery import Celery
 
 from app import create_app, db
 
 
 app = create_app(os.getenv('FLASK_ENV') or 'default')
+celery = Celery(app.name, broker=app.config['CELERY_BROKER_URL'])
 manager = Manager(app)
 migrate = Migrate(app, db)
 
