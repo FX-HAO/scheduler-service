@@ -1,4 +1,5 @@
 import os
+
 COV = None
 if os.environ.get('FLASK_CONFIG'):
     import coverage

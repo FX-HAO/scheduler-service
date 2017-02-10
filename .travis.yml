@@ -1,13 +1,28 @@
+sudo: required
 language: python
 rvm:
   - 2.6
   - 2.7
+services:
+  - docker
 env:
   - FLASK_CONFIG=True
+before_install:
+  - openssl aes-256-cbc -K $encrypted_85fad33e5dcd_key -iv $encrypted_85fad33e5dcd_iv -in id_rsa.enc -out id_rsa -d
 install: "pip install -r requirements/test.txt"
 script: python -m unittest discover
-after_sucess:
+after_success:
   - python manage.py coverage
   - CODECLIMATE_REPO_TOKEN=a968c0f73c4a389ff9a149ef3248f53f04387161a2ad94291fbd083a6e63eb16 codeclimate-test-reporter
+  - docker build -t fuxin/scheduler-service .
+  - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+  - docker push fuxin/scheduler-service
 notifications:
   slack: scheduler-service:Olkw6F2rVv9pzswcokofUqNH
+deploy:
+  # deploy develop to the production environment
+  - provider: script
+    skip_cleanup: true
+    script: ./deploy.sh
+    on:
+      branch: develop
