@@ -1,11 +1,11 @@
 # coding: utf-8
 from flask import g
 from flask_restful import Resource
-from flask_restful import reqparse
 from flask_restful import abort
-import requests
+from flask_restful import reqparse
 
 from app.models import User, Sina
+from app.service.spider.sina_spider.spider import SinaSpider
 from .. import auth
 
 parser = reqparse.RequestParser()
@@ -23,7 +23,8 @@ class SinaResource(Resource):
     def post(self):
         args = parser.parse_args(strict=True)
         sina_url = args.get('sina_user_url')
-        response = requests.get(url=sina_url)
+        sina_spider = SinaSpider()
+        response = sina_spider.verify_sina_url(sina_url)
         if response.status_code != 200:
             abort('sina user is not exist')
         sina_id = "return sina user id"
@@ -34,3 +35,8 @@ class SinaResource(Resource):
             follower=g.current_user
         )
         return sina.json(), 201
+
+    @auth.login_required
+    def post(self):
+        args = parser.parse_args(strict=True)
+        sina_url = args.get('sina_user_url')

@@ -15,6 +15,7 @@ from app import create_app, db
 
 app = create_app(os.getenv('FLASK_ENV') or 'default')
 celery = Celery(app.name, broker=app.config['CELERY_BROKER_URL'])
+celery.conf.update(app.config)
 manager = Manager(app)
 migrate = Migrate(app, db)
 
