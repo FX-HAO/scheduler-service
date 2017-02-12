@@ -1,3 +1,4 @@
+from celery import Celery
 from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask_oauthlib.provider import OAuth2Provider
@@ -21,3 +22,15 @@ def create_app(config_name):
     api.init_app(app)
 
     return app
+
+def make_celery(app):
+    celery = Celery(app.import_name, broker=app.config['CELERY_CROKE_URL'])
+    celery.conf.update(app.config)
+    TaskBase = Celery.Task
+    class ContextTask(TaskBase):
+        abstract = True
+        def __call__(self, *args, **kwargs):
+            with app.app.context():
+                return TaskBase.__call__(self, *args, **kwargs)
+    celery.Task = ContextTask
+    return celery
