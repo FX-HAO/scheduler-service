@@ -3,12 +3,14 @@ from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask_oauthlib.provider import OAuth2Provider
 from flask_mail import Mail
+from flask_httpauth import HTTPBasicAuth
 
 from config import config
 
 db = SQLAlchemy()
 oauth = OAuth2Provider()
 mail = Mail()
+auth = HTTPBasicAuth()
 
 def create_app(config_name):
     app = Flask(__name__)
@@ -24,9 +26,9 @@ def create_app(config_name):
     return app
 
 def make_celery(app):
-    celery = Celery(app.import_name, broker=app.config['CELERY_CROKE_URL'])
+    celery = Celery(app.import_name, broker=app.config['CELERY_BROKER_URL'])
     celery.conf.update(app.config)
-    TaskBase = Celery.Task
+    TaskBase = celery.Task
     class ContextTask(TaskBase):
         abstract = True
         def __call__(self, *args, **kwargs):

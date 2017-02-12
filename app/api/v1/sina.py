@@ -6,7 +6,7 @@ from flask_restful import reqparse
 
 from app.models import User, Sina
 from app.service.spider.sina_spider.spider import SinaSpider
-from .. import auth
+from app import auth
 
 parser = reqparse.RequestParser()
 parser.add_argument('sina_user_url', type=str, help='required provide sina url')

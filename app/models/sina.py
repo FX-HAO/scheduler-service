@@ -2,7 +2,8 @@
 from .. import db
 from ..minixs import CRUDMixin, Serializer
 
-class Sina(CRUDMixin, Serializer, db):
+
+class Sina(CRUDMixin, Serializer, db.Model):
     __tablename__ = 'sina'
     id = db.Column(db.Integer, primary_key=True)
     sina_id = db.Column(db.Integer, index=True, unique=True)

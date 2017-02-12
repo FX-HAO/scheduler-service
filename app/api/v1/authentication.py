@@ -2,7 +2,8 @@
 from flask import g
 from flask_httpauth import HTTPBasicAuth
 from app.models import User
-from .. import api, auth
+from .. import api
+from app import auth
 
 
 @auth.verify_password
