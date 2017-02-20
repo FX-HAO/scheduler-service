@@ -1,7 +1,6 @@
 sudo: required
 language: python
 python:
-  - "2.6"
   - "2.7"
 services:
   - docker
@@ -11,13 +10,13 @@ install: "pip install -r requirements/test.txt"
 script: python -m unittest discover
 after_success:
   - if [ "$TRAVIS_BRANCH" == "develop" ]; then
-      python manage.py coverage
-      CODECLIMATE_REPO_TOKEN=a968c0f73c4a389ff9a149ef3248f53f04387161a2ad94291fbd083a6e63eb16 codeclimate-test-reporter
+      python manage.py coverage;
+      CODECLIMATE_REPO_TOKEN=a968c0f73c4a389ff9a149ef3248f53f04387161a2ad94291fbd083a6e63eb16 codeclimate-test-reporter;
     fi
   - if [ "$TRAVIS_BRANCH" == "develop" ]; then
-      docker build -t fuxin/scheduler-service .
-      docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-      docker push fuxin/scheduler-service
+      docker build -t fuxin/scheduler-service .;
+      docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+      docker push fuxin/scheduler-service;
     fi
 notifications:
   slack: scheduler-service:Olkw6F2rVv9pzswcokofUqNH
