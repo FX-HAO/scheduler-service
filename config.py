@@ -4,11 +4,15 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 
 class Config:
+    #FLASK-MAIL CONFIG
     MAIL_SERVER = 'smtp-mail.outlook.com'
     MAIL_PORT = 587
     MAIL_USE_TLE = True
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
+    # CELERY BROKER AND BACKEND
+    BROKER = 'redis://localhost:6379'
+    CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
     @staticmethod
     def init_app(app):
         pass

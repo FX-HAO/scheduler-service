@@ -6,6 +6,7 @@ from ...models import User
 
 parser = reqparse.RequestParser()
 
+
 class UserResource(Resource):
     def get(self, id):
         return User.query.get_or_404(id).json()
