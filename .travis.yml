@@ -9,11 +9,11 @@ env:
 install: "pip install -r requirements/test.txt"
 script: python -m unittest discover
 after_success:
-  - if [ "$TRAVIS_BRANCH" == "develop" ]; then
+  - if [ "$TRAVIS_BRANCH" == "develop" ] && [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
       python manage.py coverage;
       CODECLIMATE_REPO_TOKEN=a968c0f73c4a389ff9a149ef3248f53f04387161a2ad94291fbd083a6e63eb16 codeclimate-test-reporter;
     fi
-  - if [ "$TRAVIS_BRANCH" == "develop" ]; then
+  - if [ "$TRAVIS_BRANCH" == "develop" ] && [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
       docker build -t fuxin/scheduler-service .;
       docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
       docker push fuxin/scheduler-service;
