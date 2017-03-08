@@ -15,6 +15,7 @@ from app import create_app, db, make_celery
 
 app = create_app(os.getenv('FLASK_ENV') or 'default')
 celery = make_celery(app)
+
 manager = Manager(app)
 migrate = Migrate(app, db)
 
