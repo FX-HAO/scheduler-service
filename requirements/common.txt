@@ -5,5 +5,9 @@ Flask-Migrate==2.0.3
 Flask-SQLAlchemy==2.1
 Flask-RESTful==0.3.5
 Flask-OAuthlib==0.9.3
+Flask-HTTPAuth==3.2.1
+celery==4.0.2
+requests==2.12.4
+Flask-Mail==0.9.1
 psycopg2==2.6.2
 gunicorn==19.6.0

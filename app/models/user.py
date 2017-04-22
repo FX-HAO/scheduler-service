@@ -11,6 +11,7 @@ class User(CRUDMixin, Serializer, db.Model):
     email = db.Column(db.String(64), unique=True, index=True)
     username = db.Column(db.String(64), unique=True, index=True)
     password_hash = db.Column(db.String(128))
+    sina = db.relationship('Sina', backref='follower', lazy='dynamic')
 
     @property
     def password(self):
