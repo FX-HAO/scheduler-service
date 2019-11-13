@@ -1,6 +1,7 @@
 from datetime import datetime
 import time
 
+import jwt
 from passlib.hash import pbkdf2_sha256
 import orm
 
@@ -32,3 +33,19 @@ class User(orm.Model):
 
     def verify_password(self, password):
         return pbkdf2_sha256.verify(password, self.password_hash)
+
+    def generate_auth_token(self, app) -> str:
+        return jwt.encode({'id': self.id, 'text': 'auth'},
+                          app.config['SECRET_KEY'],
+                          algorithm='HS256')
+
+    @classmethod
+    async def verify_auth_token(cls, app, token: str) -> Boolean:
+        try:
+            data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=['HS256'])
+        except Exception:
+            return False
+        else:
+            if data['text'] != 'auth':
+                return False
+            return await cls.objects.get(id=data['id'])
