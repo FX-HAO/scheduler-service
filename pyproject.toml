@@ -13,12 +13,14 @@ celery = "^4.3"
 motor = "^2.0"
 aioredis = "^1.3"
 requests = "^2.22"
+click = "^7.0"
 
 [tool.poetry.dev-dependencies]
+pylint = "^2.4"
 
 [[tool.poetry.source]]
-name = "tsinghua"
-url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+name = "ali"
+url = "https://mirrors.aliyun.com/pypi/simple/"
 
 [build-system]
 requires = ["poetry>=0.12"]
