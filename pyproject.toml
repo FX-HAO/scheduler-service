@@ -17,6 +17,7 @@ click = "^7.0"
 databases = "^0.2.6"
 asyncpg = "^0.19.0"
 orm = "^0.1.5"
+passlib = "^1.7"
 
 [tool.poetry.dev-dependencies]
 pylint = "^2.4"
