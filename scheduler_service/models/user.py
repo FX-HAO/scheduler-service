@@ -35,17 +35,19 @@ class User(orm.Model):
         return pbkdf2_sha256.verify(password, self.password_hash)
 
     def generate_auth_token(self, app) -> str:
-        return jwt.encode({'id': self.id, 'text': 'auth'},
+        return jwt.encode({'id': self.id, 'flag': 'auth'},
                           app.config['SECRET_KEY'],
                           algorithm='HS256')
 
     @classmethod
-    async def verify_auth_token(cls, app, token: str) -> Boolean:
+    async def verify_auth_token(cls, app, token: str) -> bool:
         try:
-            data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=['HS256'])
+            data = jwt.decode(token,
+                              app.config['SECRET_KEY'],
+                              algorithms=['HS256'])
         except Exception:
             return False
         else:
-            if data['text'] != 'auth':
+            if data['flag'] != 'auth':
                 return False
             return await cls.objects.get(id=data['id'])
