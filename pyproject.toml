@@ -6,7 +6,7 @@ authors = ["FX-HAO <haofxpro@gmail.com> & CoCongV <cong.lv.yx@gmail.com>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.7"
 sanic = "^19.9"
 sanic-restful = "^0.0.8"
 celery = "^4.3"
