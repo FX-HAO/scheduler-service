@@ -13,9 +13,9 @@ class User(orm.Model):
     __metadata__ = metadata
 
     id = orm.Integer(primary_key=True)
-    name = orm.String(max_length='32')
-    password_hash = orm.String(max_length='256')
-    email = orm.String(max_length='32')
+    name = orm.String(max_length=32)
+    password_hash = orm.String(max_length=256)
+    email = orm.String(max_length=32)
     verify = orm.Boolean(default=False)
     register_time = orm.DateTime(default=datetime.now)
     login_time = orm.DateTime()
@@ -51,3 +51,10 @@ class User(orm.Model):
             if data['flag'] != 'auth':
                 return False
             return await cls.objects.get(id=data['id'])
+    
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "email": self.email
+        }

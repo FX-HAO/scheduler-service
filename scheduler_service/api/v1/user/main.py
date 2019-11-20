@@ -14,8 +14,14 @@ user_parse_get.add_argument("name")
 user_parse_get.add_argument("email")
 user_parse_get.add_argument("password", required=True)
 
+user_parse_patch = reqparse.RequestParser()
+user_parse_patch.add_argument("name")
+user_parse_patch.add_argument("email")
+user_parse_patch.add_argument("password")
+
 
 class UserApi(Resource):
+    methods = {"get": login_require}
 
     async def post(self, request):
         params = user_parse_post.parse_args(request)
@@ -34,7 +40,10 @@ class UserApi(Resource):
             raise InvalidUsage("Bad Request")
         if not user.verify_password(params.password):
             raise Unauthorized("Unauthorized")
-        token = user.generate_auth_token(request.app, request.token)
-        return {
-            "data": token
-        }
+        # token = user.generate_auth_token(request.app, request.token)
+        return user.to_dict()
+
+    async def patch(self, request, user: User):
+        params = user_parse_patch.parse_args(request)
+        user = await user.update(**params)
+        return user.to_dict()
