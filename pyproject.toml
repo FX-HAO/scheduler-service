@@ -1,0 +1,37 @@
+[tool.poetry]
+name = "scheduler-service"
+version = "0.1.0"
+description = ""
+authors = ["FX-HAO <haofxpro@gmail.com> & CoCongV <cong.lv.yx@gmail.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.7"
+sanic = "^19.9"
+sanic-restful = "^0.0.8"
+celery = "^4.3"
+motor = "^2.0"
+aioredis = "^1.3"
+requests = "^2.22"
+click = "^7.0"
+databases = "^0.2.6"
+asyncpg = "^0.19.0"
+orm = "^0.1.5"
+passlib = "^1.7"
+pyjwt = "^1.7"
+ipython = "^7.9"
+
+[tool.poetry.dev-dependencies]
+pylint = "^2.4"
+
+[[tool.poetry.source]]
+name = "ali"
+url = "https://mirrors.aliyun.com/pypi/simple/"
+
+[tool.poetry.scripts]
+scheduler-cli = "scheduler_service.manage:cli"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
+
