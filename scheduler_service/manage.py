@@ -4,7 +4,7 @@ from IPython import embed
 
 from scheduler_service.api import create_api
 from scheduler_service.service import make_celery
-from scheduler_service.models import create_orm
+from scheduler_service.models import create_orm, User
 
 app = create_api({
     "name": "scheduler_service",
@@ -22,6 +22,7 @@ def cli():
 @cli.command()
 def shell():
     context = {
-        "app": app
+        "app": app,
+        "User": User
     }
     embed(user_ns=context, colors="neutral")
