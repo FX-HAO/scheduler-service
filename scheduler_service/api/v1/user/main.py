@@ -25,8 +25,9 @@ class UserApi(Resource):
 
     async def post(self, request):
         params = user_parse_post.parse_args(request)
+        password_hash = User.hash_password(params.password)
         await User.objects.create(name=params.name,
-                                  password=params.password,
+                                  password_hash=password_hash,
                                   email=params.email)
         return '', 201
 

@@ -6,9 +6,10 @@ from passlib.hash import pbkdf2_sha256
 import orm
 
 from . import metadata
+from .mixin import CRUDMixin
 
 
-class User(orm.Model):
+class User(orm.Model, CRUDMixin):
     __tablename__ = 'user'
     __metadata__ = metadata
 
@@ -18,18 +19,19 @@ class User(orm.Model):
     email = orm.String(max_length=32)
     verify = orm.Boolean(default=False)
     register_time = orm.DateTime(default=datetime.now)
-    login_time = orm.DateTime()
+    login_time = orm.DateTime(allow_null=True)
 
     async def ping(self):
         await self.update(login_time=time.time())
 
-    @property
-    def password(self, password):
-        raise AttributeError('password is not a readable attr')
+    # @property
+    # def password(self, password):
+    #     raise AttributeError('password is not a readable attr')
 
-    @password.setter
-    def password(self, password):
-        self.password_hash = pbkdf2_sha256.hash(password)
+    # @password.setter
+    @staticmethod
+    def hash_password(password):
+        return pbkdf2_sha256.hash(password)
 
     def verify_password(self, password):
         return pbkdf2_sha256.verify(password, self.password_hash)
@@ -51,7 +53,7 @@ class User(orm.Model):
             if data['flag'] != 'auth':
                 return False
             return await cls.objects.get(id=data['id'])
-    
+
     def to_dict(self):
         return {
             "id": self.id,

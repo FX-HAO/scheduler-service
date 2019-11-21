@@ -11,7 +11,7 @@ app = create_api({
     "MODEL_URL": "postgresql://localhost/scheduler"
 })
 celery = make_celery(app)
-create_orm(app._databases)
+create_orm(app._database)
 
 
 @click.group()
@@ -25,4 +25,7 @@ def shell():
         "app": app,
         "User": User
     }
-    embed(user_ns=context, colors="neutral")
+    embed(user_ns=context,
+          colors="neutral",
+          using="asyncio",
+          header="First: await app._database.connect()")
