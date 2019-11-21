@@ -4,6 +4,7 @@ import time
 import jwt
 from passlib.hash import pbkdf2_sha256
 import orm
+from sanic import Sanic
 
 from . import metadata
 from .mixin import CRUDMixin
@@ -30,19 +31,19 @@ class User(orm.Model, CRUDMixin):
 
     # @password.setter
     @staticmethod
-    def hash_password(password):
+    def hash_password(password: str) -> str:
         return pbkdf2_sha256.hash(password)
 
-    def verify_password(self, password):
+    def verify_password(self, password: str) -> bool:
         return pbkdf2_sha256.verify(password, self.password_hash)
 
-    def generate_auth_token(self, app) -> str:
+    def generate_auth_token(self, app: Sanic) -> str:
         return jwt.encode({'id': self.id, 'flag': 'auth'},
                           app.config['SECRET_KEY'],
                           algorithm='HS256')
 
     @classmethod
-    async def verify_auth_token(cls, app, token: str) -> bool:
+    async def verify_auth_token(cls, app: Sanic, token: str) -> bool:
         try:
             data = jwt.decode(token,
                               app.config['SECRET_KEY'],
@@ -54,7 +55,7 @@ class User(orm.Model, CRUDMixin):
                 return False
             return await cls.objects.get(id=data['id'])
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
         return {
             "id": self.id,
             "name": self.name,
