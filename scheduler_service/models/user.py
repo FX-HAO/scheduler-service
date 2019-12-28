@@ -25,11 +25,14 @@ class User(orm.Model, CRUDMixin):
     async def ping(self):
         await self.update(login_time=time.time())
 
-    # @property
-    # def password(self, password):
-    #     raise AttributeError('password is not a readable attr')
+    @property
+    def password(self):
+        raise AttributeError('password is not a readable attr')
 
-    # @password.setter
+    @password.setter
+    def password(self, password):
+        self.password_hash = pbkdf2_sha256.hash(password)
+    
     @staticmethod
     def hash_password(password: str) -> str:
         return pbkdf2_sha256.hash(password)

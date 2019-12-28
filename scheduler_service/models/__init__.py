@@ -11,7 +11,6 @@ def create_orm(database_obj: databases.Database):
 
     orm.Model.__database__ = database_obj
     orm.Model.__metadata__ = metadata
-    print("init orm model")
     return orm.Model
 
 
