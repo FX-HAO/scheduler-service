@@ -20,12 +20,12 @@ passlib = "^1.7"
 pyjwt = "^1.7"
 ipython = "^7.9"
 psycopg2 = "^2.8"
-motorengine = "^1.0.0"
+arq = "^0.18.4"
+motor = "^2.1.0"
 
 [tool.poetry.dev-dependencies]
 pylint = "^2.4"
 rope = "^0.14.0"
-# scheduler-service = {path = "."}
 
 [[tool.poetry.source]]
 name = "ali"

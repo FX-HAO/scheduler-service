@@ -7,14 +7,16 @@ import sqlalchemy
 
 from scheduler_service.api import create_api
 from scheduler_service.service import make_celery
-from scheduler_service.models import create_orm, User
+from scheduler_service.models import init_orm, User
 
 app = create_api({
     "name": "scheduler_service",
-    "MODEL_URL": "postgresql://localhost/scheduler"
+    "PSQL_URL": "postgresql://localhost/scheduler",
+    "MONGO_URL": "mongodb://localhost:27017",
+    "MONGO_DB": "test"
 })
 celery = make_celery(app)
-create_orm(app._database)
+init_orm(app._databases)
 
 
 @click.group()
@@ -32,3 +34,7 @@ def shell():
           colors="neutral",
           using="asyncio",
           header="First: await app._database.connect()")
+
+@cli.command()
+def runserver():
+    app.run(debug=True)

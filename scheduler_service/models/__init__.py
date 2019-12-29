@@ -5,7 +5,7 @@ import sqlalchemy
 metadata = sqlalchemy.MetaData()
 
 
-def create_orm(database_obj: databases.Database):
+def init_orm(database_obj: databases.Database):
     engine = sqlalchemy.create_engine(str(database_obj.url))
     metadata.create_all(engine)
 
