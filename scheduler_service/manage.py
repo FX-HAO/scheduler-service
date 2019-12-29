@@ -16,7 +16,7 @@ app = create_api({
     "MONGO_DB": "test"
 })
 celery = make_celery(app)
-init_orm(app._databases)
+init_orm(app.pg_db)
 
 
 @click.group()
@@ -36,5 +36,7 @@ def shell():
           header="First: await app._database.connect()")
 
 @cli.command()
-def runserver():
-    app.run(debug=True)
+@click.option("--host", default="localhost")
+@click.option("--port", default=8080)
+def runserver(host, port):
+    app.run(debug=True, host=host, port=port)
