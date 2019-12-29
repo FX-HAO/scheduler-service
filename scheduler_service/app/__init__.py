@@ -16,11 +16,14 @@ def create_api(config):
 
     app.listeners['bnefore_server_stop'].append(close_motor)
 
-    from .v1 import bpg
+    from .api.v1 import bpg
     app.register_blueprint(bpg)
 
+    from .models import init_orm
+    init_orm(app.pg_db)
 
     return app
+
 
 async def setup_database(app, loop):
     await app._database.connect()

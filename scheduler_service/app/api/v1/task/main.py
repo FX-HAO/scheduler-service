@@ -3,9 +3,9 @@ from sanic.request import Request
 from sanic.exceptions import InvalidUsage
 from sanic_restful import Resource, reqparse
 
-from scheduler_service.api import mongo_db
-from scheduler_service.api.decorators import login_require
-from scheduler_service.models import User
+from scheduler_service.app import mongo_db
+from scheduler_service.app.api.decorators import login_require
+from scheduler_service.app.models import User
 
 
 tasks_post_parse = reqparse.RequestParser()
@@ -59,7 +59,7 @@ class TaskApi(Resource):
                                        "urls": url
                                    }})
 
-    async def delete(self, request: Request, user: User, task_id):
+    async def delete(self, request: Request, user: User, task_id: int):
         await mongo_db.task.delete({"_id": ObjectId(task_id)})
 
     async def patch(self, request: Request, user: User):

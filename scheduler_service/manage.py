@@ -1,13 +1,8 @@
 import click
 from IPython import embed
-import databases
-import orm
-import sqlalchemy
 
-
-from scheduler_service.api import create_api
-from scheduler_service.service import make_celery
-from scheduler_service.models import init_orm, User
+from scheduler_service.app import create_api
+from scheduler_service.app.models import User
 
 app = create_api({
     "name": "scheduler_service",
@@ -15,8 +10,6 @@ app = create_api({
     "MONGO_URL": "mongodb://localhost:27017",
     "MONGO_DB": "test"
 })
-celery = make_celery(app)
-init_orm(app.pg_db)
 
 
 @click.group()

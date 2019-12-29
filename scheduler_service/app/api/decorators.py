@@ -2,7 +2,7 @@ from functools import wraps
 
 from sanic.exceptions import Unauthorized
 
-from scheduler_service.models import User
+from scheduler_service.app.models import User
 
 
 def login_require(func):
