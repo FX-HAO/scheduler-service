@@ -1,5 +1,6 @@
 from bson import ObjectId
 from sanic.request import Request
+from sanic.exceptions import InvalidUsage
 from sanic_restful import Resource, reqparse
 
 from scheduler_service.api import mongo_db
@@ -24,6 +25,10 @@ class TasksApi(Resource):
         return doc or {}
 
     async def post(self, request: Request, user: User):
+        docs = await mongo_db.task.find({"uid": user.id}).to_list()
+        if len(docs) >= request.app.config['MAX_TASKS']:
+            raise InvalidUsage("NUMBER OF TASKS EXCEEDS THE LIMIT")
+
         params = tasks_post_parse.parse_args(request)
         await mongo_db.tasks.insert({
             "name": params.name,
@@ -41,6 +46,9 @@ class TaskApi(Resource):
         return doc or {}
 
     async def post(self, request: Request, user: User, task_id: int):
+        doc = await mongo_db.task.find_one({"_id": ObjectId(task_id)})
+        if len(doc['urls']) >= request.app.config['MAX_URLS']:
+            raise InvalidUsage("NUMBER OF URLS EXCEEDS THE LIMIT")
         params = task_parse.parse_args(request)
         url = {
             "request_url": params.request_url,

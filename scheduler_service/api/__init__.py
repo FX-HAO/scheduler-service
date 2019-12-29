@@ -5,6 +5,7 @@ from sanic import Sanic
 mongo_client: motor_asyncio.AsyncIOMotorClient = None
 mongo_db: motor_asyncio.AsyncIOMotorDatabase = None
 
+
 def create_api(config):
     app = Sanic(name=config['name'])
     app.config.from_object(config)
