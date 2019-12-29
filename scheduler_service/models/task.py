@@ -17,7 +17,9 @@
 
 # class Task(Document):
 #     __collection__ = 'task'
-
+#
+#     name = StringField(required=True)
 #     user_id = IntField(required=True)
+#     interval_time = IntField(required=True)
 #     urls = ListField(EmbeddedDocumentField(URLDetail))
 
