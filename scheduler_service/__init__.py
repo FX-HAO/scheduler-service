@@ -7,24 +7,23 @@ from sanic import Sanic
 mongo_client: motor_asyncio.AsyncIOMotorClient = None
 mongo_db: motor_asyncio.AsyncIOMotorDatabase = None
 redis: ArqRedis = None
+pg_db: databases.Database = None
 
 
 def create_app(config):
-    # global
-    app = Sanic(name=config['name'])
+    global pg_db
+    app = Sanic(name=config.name)
     app.config.from_object(config)
+    pg_db = databases.Database(app.config['PG_URL'])
 
-    app.pg_db = databases.Database(config['PSQL_URL'])
+    app.listeners['after_server_start'].extend(
+        [setup_motor, setup_arq, setup_database])
 
-    app.listeners['after_server_start'].extend([setup_motor, setup_arq])
-
-    app.listeners['before_server_stop'].extend([close_motor, close_arq])
+    app.listeners['before_server_stop'].extend(
+        [close_motor, close_arq, close_database])
 
     from .api.v1 import bpg
     app.register_blueprint(bpg)
-
-    from .models import init_orm
-    init_orm(app.pg_db)
 
     return app
 
@@ -41,11 +40,13 @@ async def close_arq(app, loop):
 
 
 async def setup_database(app, loop):
-    await app._database.connect()
+    global pg_db
+    await pg_db.connect()
 
 
 async def close_database(app, loop):
-    await app._databases.disconnect()
+    global pg_db
+    await pg_db.disconnect()
 
 
 async def setup_motor(app, loop):
