@@ -6,6 +6,7 @@ from passlib.hash import pbkdf2_sha256
 import orm
 from sanic import Sanic
 
+from scheduler_service import pg_db
 from . import metadata
 from .mixin import CRUDMixin
 
@@ -13,6 +14,7 @@ from .mixin import CRUDMixin
 class User(orm.Model, CRUDMixin):
     __tablename__ = 'user'
     __metadata__ = metadata
+    __database__ = pg_db
 
     id = orm.Integer(primary_key=True)
     name = orm.String(max_length=32)
