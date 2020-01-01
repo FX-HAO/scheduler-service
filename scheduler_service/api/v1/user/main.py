@@ -1,8 +1,8 @@
 from sanic.exceptions import InvalidUsage, Unauthorized
 from sanic_restful import Resource, reqparse
 
-from scheduler_service.app.api.decorators import login_require
-from scheduler_service.app.models import User
+from scheduler_service.api.decorators import login_require
+from scheduler_service.models import User
 
 user_parse_post = reqparse.RequestParser()
 user_parse_post.add_argument("name", required=True)

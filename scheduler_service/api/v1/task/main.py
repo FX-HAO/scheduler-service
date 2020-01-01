@@ -3,9 +3,9 @@ from sanic.request import Request
 from sanic.exceptions import InvalidUsage
 from sanic_restful import Resource, reqparse
 
-from scheduler_service.app import mongo_db
-from scheduler_service.app.api.decorators import login_require
-from scheduler_service.app.models import User
+from scheduler_service import mongo_db
+from scheduler_service.api.decorators import login_require
+from scheduler_service.models import User
 
 
 tasks_post_parse = reqparse.RequestParser()
