@@ -1,17 +1,11 @@
-import asyncio
-
 import click
 from IPython import embed
 
-from scheduler_service import create_app, redis
-from scheduler_service.models import User
+from scheduler_service import create_app
+from scheduler_service.config import Config
 
-app = create_app({
-    "name": "scheduler_service",
-    "PSQL_URL": "postgresql://localhost/scheduler",
-    "MONGO_URL": "mongodb://localhost:27017",
-    "MONGO_DB": "test"
-})
+app = create_app(Config)
+from scheduler_service.models import User
 
 
 @click.group()
