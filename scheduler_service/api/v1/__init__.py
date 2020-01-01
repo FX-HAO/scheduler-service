@@ -1,5 +1,6 @@
 from sanic import Blueprint
 
-from .task import bp
+from .task import bp as task_bp
+from .user import bp as user_bp
 
-bpg = Blueprint.group(bp, url_prefix="v1")
+bpg = Blueprint.group(task_bp, user_bp, url_prefix="v1")

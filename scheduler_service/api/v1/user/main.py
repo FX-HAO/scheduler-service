@@ -26,17 +26,17 @@ class UserApi(Resource):
     async def post(self, request):
         params = user_parse_post.parse_args(request)
         password_hash = User.hash_password(params.password)
-        await User.objects.create(name=params.name,
-                                  password_hash=password_hash,
-                                  email=params.email)
-        return '', 201
+        user = await User.objects.create(name=params.name,
+                                         password_hash=password_hash,
+                                         email=params.email)
+        return {'uid': user.id}, 201
 
     async def get(self, request):
         params = user_parse_get.parse_args(request)
         if params.name:
-            user = await User.objects.filter(name=params.name)
+            user = await User.objects.filter(name=params.name).all()[0]
         elif params.email:
-            user = await User.objects.filter(email=params.email)
+            user = await User.objects.filter(email=params.email).all()[0]
         else:
             raise InvalidUsage("Bad Request")
         if not user.verify_password(params.password):
