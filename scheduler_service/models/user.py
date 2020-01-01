@@ -32,7 +32,7 @@ class User(orm.Model, CRUDMixin):
     @password.setter
     def password(self, password):
         self.password_hash = pbkdf2_sha256.hash(password)
-    
+
     @staticmethod
     def hash_password(password: str) -> str:
         return pbkdf2_sha256.hash(password)

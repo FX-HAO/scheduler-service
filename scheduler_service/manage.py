@@ -3,7 +3,7 @@ import asyncio
 import click
 from IPython import embed
 
-from scheduler_service import create_app
+from scheduler_service import create_app, redis
 from scheduler_service.models import User
 
 app = create_app({

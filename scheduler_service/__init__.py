@@ -18,7 +18,7 @@ def create_app(config):
 
     app.listeners['after_server_start'].extend([setup_motor, setup_arq])
 
-    app.listeners['bnefore_server_stop'].append(close_motor)
+    app.listeners['before_server_stop'].extend([close_motor, close_arq])
 
     from .api.v1 import bpg
     app.register_blueprint(bpg)
@@ -32,6 +32,12 @@ def create_app(config):
 async def setup_arq(app, loop):
     global redis
     redis = await create_pool(RedisSettings())
+
+
+async def close_arq(app, loop):
+    global redis
+    redis.close()
+    await redis.wait_closed()
 
 
 async def setup_database(app, loop):
@@ -50,10 +56,11 @@ async def setup_motor(app, loop):
 
 
 async def close_motor(app, loop):
-    app.mongo_client.close()
+    global mongo_client
+    mongo_client.close()
 
 
-def make_arq(config):
-    global redis
-    redis = create_pool(RedisSettings())
-    return redis
+# def make_arq(config):
+#     global redis
+#     redis = create_pool(RedisSettings())
+#     return redis
