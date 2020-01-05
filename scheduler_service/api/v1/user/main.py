@@ -34,9 +34,9 @@ class UserApi(Resource):
     async def get(self, request):
         params = user_parse_get.parse_args(request)
         if params.name:
-            user = await User.objects.filter(name=params.name).all()[0]
+            user = await User.objects.get(name=params.name)
         elif params.email:
-            user = await User.objects.filter(email=params.email).all()[0]
+            user = await User.objects.get(email=params.email)
         else:
             raise InvalidUsage("Bad Request")
         if not user.verify_password(params.password):

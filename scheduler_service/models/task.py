@@ -1,25 +1,39 @@
-# from datetime import datetime
+from datetime import datetime
 
-# from motorengine import (Document, URLField, ListField, JsonField,
-#     DateTimeField, EmbeddedDocumentField, StringField, IntField)
+import orm
 
+from scheduler_service import pg_db
+from . import metadata
+from .mixin import CRUDMixin
+
+
+class Task(orm.Model, CRUDMixin):
+    __tablename__ = 'task'
+    __metadata__ = metadata
+    __database__ = pg_db
+
+    id = orm.Integer(primary_key=True)
+    name = orm.String(max_length=32)
+    interval = orm.Time()
+    start_time = orm.DateTime(required=True, default=datetime.utcnow)
+    cookies = orm.JSON()
+
+    user_id = orm.Integer()
+
+
+class URLDetail(orm.Model, CRUDMixin):
+    __tablename__ = 'url_detail'
+    __metadata__ = metadata
+    __database__ = pg_db
+
+    id = orm.Integer(primary_key=True)
+    name = orm.String(max_length=32)
+    request_url = orm.String(max_length=128)
+    callback_url = orm.String(max_length=128)
+    params = orm.JSON()
+
+    task_id = orm.Integer()
 
 # class Response(Document):
 #     time = DateTimeField(default=datetime.now)
-#     response = JsonField()
-
-
-# class URLDetail(Document):
-#     name = StringField(max_length=32, required=True)
-#     request_url = URLField()
-#     callbasck_url = URLField()
-#     responses = ListField(EmbeddedDocumentField(embedded_document_type=Response))
-
-# class Task(Document):
-#     __collection__ = 'task'
-#
-#     name = StringField(required=True)
-#     user_id = IntField(required=True)
-#     interval_time = IntField(required=True)
-#     urls = ListField(EmbeddedDocumentField(URLDetail))
-
+#     body = JsonField()
