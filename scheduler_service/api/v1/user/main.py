@@ -24,27 +24,27 @@ class UserApi(Resource):
     methods = {"get": login_require}
 
     async def post(self, request):
-        params = user_parse_post.parse_args(request)
-        password_hash = User.hash_password(params.password)
-        user = await User.objects.create(name=params.name,
+        args = user_parse_post.parse_args(request)
+        password_hash = User.hash_password(args.password)
+        user = await User.objects.create(name=args.name,
                                          password_hash=password_hash,
-                                         email=params.email)
+                                         email=args.email)
         return {'uid': user.id}, 201
 
     async def get(self, request):
-        params = user_parse_get.parse_args(request)
-        if params.name:
-            user = await User.objects.get(name=params.name)
-        elif params.email:
-            user = await User.objects.get(email=params.email)
+        args = user_parse_get.parse_args(request)
+        if args.name:
+            user = await User.objects.get(name=args.name)
+        elif args.email:
+            user = await User.objects.get(email=args.email)
         else:
             raise InvalidUsage("Bad Request")
-        if not user.verify_password(params.password):
+        if not user.verify_password(args.password):
             raise Unauthorized("Unauthorized")
         # token = user.generate_auth_token(request.app, request.token)
         return user.to_dict()
 
     async def patch(self, request, user: User):
-        params = user_parse_patch.parse_args(request)
-        user = await user.update(**params)
+        args = user_parse_patch.parse_args(request)
+        user = await user.update(**args)
         return user.to_dict()

@@ -15,7 +15,7 @@ class Task(orm.Model, CRUDMixin):
     id = orm.Integer(primary_key=True)
     name = orm.String(max_length=32)
     interval = orm.Time()
-    start_time = orm.DateTime(required=True, default=datetime.utcnow)
+    start_time = orm.DateTime(default=datetime.utcnow)
     cookies = orm.JSON()
 
     user_id = orm.Integer()

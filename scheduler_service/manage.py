@@ -15,9 +15,11 @@ def cli():
 
 @cli.command()
 def shell():
+    from scheduler_service import pg_db
     context = {
         "app": app,
-        "User": User
+        "User": User,
+        "pg_db": pg_db
     }
     embed(user_ns=context,
           colors="neutral",
