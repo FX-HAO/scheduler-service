@@ -12,7 +12,7 @@ parser.add_argument("password", required=True)
 
 class AuthTokenApi(Resource):
 
-    def get(self, request):
+    async def get(self, request):
         args = parser.parse_args(request)
         if args.name:
             user = await User.objects.get(name=args.name)
