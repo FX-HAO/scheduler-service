@@ -9,19 +9,18 @@ user_parse_post.add_argument("name", required=True)
 user_parse_post.add_argument("password", required=True)
 user_parse_post.add_argument("email", required=True)
 
-user_parse_get = reqparse.RequestParser()
-user_parse_get.add_argument("name")
-user_parse_get.add_argument("email")
-user_parse_get.add_argument("password", required=True)
-
 user_parse_patch = reqparse.RequestParser()
-user_parse_patch.add_argument("name")
-user_parse_patch.add_argument("email")
-user_parse_patch.add_argument("password")
+user_parse_patch.add_argument("name", store_missing=False)
+user_parse_patch.add_argument("email", store_missing=False)
+user_parse_patch.add_argument("password", store_missing=False)
 
 
 class UserApi(Resource):
-    methods = {"get": login_require}
+    method_decorators = {
+        "get": login_require,
+        "patch": login_require,
+        "delete": login_require
+    }
 
     async def post(self, request):
         args = user_parse_post.parse_args(request)
@@ -31,20 +30,13 @@ class UserApi(Resource):
                                          email=args.email)
         return {'uid': user.id}, 201
 
-    async def get(self, request):
-        args = user_parse_get.parse_args(request)
-        if args.name:
-            user = await User.objects.get(name=args.name)
-        elif args.email:
-            user = await User.objects.get(email=args.email)
-        else:
-            raise InvalidUsage("Bad Request")
-        if not user.verify_password(args.password):
-            raise Unauthorized("Unauthorized")
-        # token = user.generate_auth_token(request.app, request.token)
+    async def get(self, request, user: User):
         return user.to_dict()
 
     async def patch(self, request, user: User):
         args = user_parse_patch.parse_args(request)
-        user = await user.update(**args)
+        await user.update(**args)
         return user.to_dict()
+
+    async def delete(self, request, user: User):
+        await user.delete()

@@ -45,7 +45,7 @@ class User(orm.Model, CRUDMixin):
     def generate_auth_token(self, app: Sanic) -> str:
         return jwt.encode({'id': self.id, 'flag': 'auth'},
                           app.config['SECRET_KEY'],
-                          algorithm='HS256')
+                          algorithm='HS256').decode()
 
     @classmethod
     async def verify_auth_token(cls, app: Sanic, token: str) -> bool:
