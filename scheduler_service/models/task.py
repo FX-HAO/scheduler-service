@@ -14,11 +14,21 @@ class Task(orm.Model, CRUDMixin):
 
     id = orm.Integer(primary_key=True)
     name = orm.String(max_length=32)
-    interval = orm.Time()
+    interval = orm.Integer(allow_null=True)
     start_time = orm.DateTime(default=datetime.utcnow)
-    cookies = orm.JSON()
+    cookies = orm.JSON(allow_null=True)
 
     user_id = orm.Integer()
+
+
+    def to_dict(self) -> dict:
+        return {
+            "id": self.id,
+            "name": self.name,
+            "email": self.interval,
+            "start_time": self.start_time,
+            "cookies": self.cookies
+        }    
 
 
 class URLDetail(orm.Model, CRUDMixin):

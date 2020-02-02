@@ -1,6 +1,29 @@
+from datetime import datetime
+import json
+
+
+class CustomJsonEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, datetime):
+            return obj.isoformat()
+        return super().default(obj)
+
+
 class Config:
     name = "scheduler_service"
     PG_URL = "postgresql://localhost/scheduler"
     MONGO_URL = "mongodb://localhost:27017"
     MONGO_DB = "test"
     SECRET_KEY = '64697a5d-53de-476e-b9ed-5f9851bfa4c4'
+    MAX_TASKS = 10
+    RESTFUL_JSON = {"cls": CustomJsonEncoder}
+
+
+class TestConfig(Config):
+    PG_URL = "postgresql://localhost/scheduler_test"
+
+
+configs = {
+    "default": Config,
+    "test": TestConfig
+}

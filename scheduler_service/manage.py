@@ -1,10 +1,14 @@
 import click
 from IPython import embed
+import os
+from sanic.log import logger
 
 from scheduler_service import create_app
-from scheduler_service.config import Config
+from scheduler_service.config import configs
 
-app = create_app(Config)
+env = os.getenv("schedulerEnv", "default")
+app = create_app(configs.get(env))
+from scheduler_service import pg_db
 from scheduler_service.models import User
 
 
@@ -15,7 +19,6 @@ def cli():
 
 @cli.command()
 def shell():
-    from scheduler_service import pg_db
     context = {
         "app": app,
         "User": User,
@@ -53,3 +56,11 @@ def arq(check, verbose):
     else:
         kwargs = {}
         run_worker(WorkerSettings, **kwargs)
+
+
+@cli.command()
+def init_db():
+    import sqlalchemy
+    from scheduler_service.models import metadata
+    engine = sqlalchemy.create_engine(str(pg_db.url))
+    metadata.create_all(engine)

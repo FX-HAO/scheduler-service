@@ -1,8 +1,8 @@
 {
-    "python.pythonPath": "~/.cache/pypoetry/virtualenvs/scheduler-service-khUjElPj-py3.8/bin/python",
+    "python.pythonPath": "~/.cache/pypoetry/virtualenvs/scheduler-service-Ic6KrsGp-py3.8/bin/python",
     "python.linting.flake8Enabled": true,
     "python.formatting.provider": "yapf",
     "python.linting.pylintEnabled": true,
-    "python.linting.pylintPath": "~/.cache/pypoetry/virtualenvs/scheduler-service-khUjElPj-py3.8/bin/pylint",
+    "python.linting.pylintPath": "pylint",
     "python.linting.enabled": true
 }

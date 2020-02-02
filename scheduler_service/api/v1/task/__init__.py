@@ -6,4 +6,4 @@ api = Api(bp)
 
 from .main import TasksApi
 
-api.add_resource(TasksApi, "/")
+api.add_resource(TasksApi, "")

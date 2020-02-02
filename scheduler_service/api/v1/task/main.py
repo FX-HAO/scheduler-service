@@ -27,13 +27,13 @@ class TasksApi(Resource):
     decorators = [login_require]
 
     async def get(self, request: Request, user: User):
-        tasks = await Task.objects.filter(uid=User.id).all()
+        tasks = await Task.objects.filter(user_id=user.id).all()
         return {
-            "tasks": tasks
+            "tasks": [t.to_dict() for t in tasks]
         }
 
     async def post(self, request: Request, user: User):
-        tasks = await Task.objects.filter(uid=User.id).all()
+        tasks = await Task.objects.filter(user_id=user.id).all()
         if len(tasks) >= request.app.config['MAX_TASKS']:
             raise InvalidUsage("NUMBER OF TASKS EXCEEDS THE LIMIT")
 

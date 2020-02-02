@@ -94,3 +94,5 @@ ENV/
 tmp/
 
 id_rsa
+
+./vscode
