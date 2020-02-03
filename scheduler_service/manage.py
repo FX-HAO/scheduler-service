@@ -31,10 +31,17 @@ def shell():
 
 
 @cli.command()
-@click.option("--host", default="localhost")
-@click.option("--port", default=8080)
-def runserver(host, port):
-    app.run(debug=True, host=host, port=port)
+@click.option('-h', "--host", default="localhost")
+@click.option('-p', "--port", default=8080, type=int)
+@click.option('-w', "--works", default=1, type=int)
+@click.option('--debug/--no-debug', default=True)
+@click.option('--access-log/--no-access-log', default=True)
+def runserver(host, port, works, debug, access_log):
+    app.run(debug=debug,
+            host=host,
+            port=port,
+            workers=works,
+            access_log=access_log)
 
 
 @cli.command()
