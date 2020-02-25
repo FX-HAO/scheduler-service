@@ -12,7 +12,7 @@ pg_db: databases.Database = None
 
 def create_app(config):
     global pg_db
-    app = Sanic(name=config.name)
+    app = Sanic(name=config.NAME)
     app.config.from_object(config)
     pg_db = databases.Database(app.config['PG_URL'])
 
@@ -30,7 +30,13 @@ def create_app(config):
 
 async def setup_arq(app, loop):
     global redis
-    redis = await create_pool(RedisSettings())
+    settings = RedisSettings(
+        host=app.config.get("REDIS_HOST", "localhost"),
+        port=app.config.get("REDIS_PORT", 6379),
+        database=app.config.get("REDIS_DATABASE", 0),
+        password=app.config.get("REDIS_DATABASE", None)
+    )
+    redis = await create_pool(settings)
 
 
 async def close_arq(app, loop):
@@ -40,12 +46,10 @@ async def close_arq(app, loop):
 
 
 async def setup_database(app, loop):
-    global pg_db
     await pg_db.connect()
 
 
 async def close_database(app, loop):
-    global pg_db
     await pg_db.disconnect()
 
 
