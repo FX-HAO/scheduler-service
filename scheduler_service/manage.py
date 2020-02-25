@@ -1,13 +1,20 @@
 import click
 from IPython import embed
 import os
+import sys
+sys.path.insert(0, ".")
+env = os.getenv("schedulerEnv", "default")
+
 from sanic.log import logger
 
 from scheduler_service import create_app
-from scheduler_service.config import configs
+try:
+    import config
+except ImportError:
+    from scheduler_service.config import configs
+    config = configs.get(env)
 
-env = os.getenv("schedulerEnv", "default")
-app = create_app(configs.get(env))
+app = create_app(config)
 from scheduler_service import pg_db
 from scheduler_service.models import User
 
