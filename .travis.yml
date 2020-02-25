@@ -1,33 +1,33 @@
 sudo: required
 language: python
 python:
-  - 3.6
   - 3.7
   - 3.8
 services:
   - docker
+  - redis-server
+  - postgresql
 before_install:
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
   - ./cc-test-reporter before-build
+  - curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
+  - source $HOME/.poetry/env
 install: poetry install
 env:
   global:
     - GIT_COMMITTED_AT=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then git log -1 --pretty=format:%ct; else git log -1 --skip 1 --pretty=format:%ct; fi)
     - CODECLIMATE_REPO_TOKEN="$CODECLIMATE_REPO_TOKEN"
     - CC_TEST_REPORTER_ID="$CC_TEST_REPORTER_ID"
-script: pytest --cov=sanic_restful --cov-report=xml
+before_script:
+    - psql -c 'create database scheduler;' -U postgres
+    - scheduler-cli init-db
+script: pytest --cov=scheduler_service --cov-report=xml
 after_success:
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
-  - docker build -t fuxin/scheduler-service .
+  - poetry build
+  - docker build -t "$DOCKER_HUB_URL" .
   - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
   - docker push "$DOCKER_HUB_URL"
-# notifications:
-#   slack: scheduler-service:Olkw6F2rVv9pzswcokofUqNH
-# deploy:
-#   # deploy develop to the production environment
-#   - provider: script
-#     skip_cleanup: true
-#     script: ./deploy.sh
-#     on:
-#       branch: develop
+notifications:
+  slack: scheduler-service:Olkw6F2rVv9pzswcokofUqNH
