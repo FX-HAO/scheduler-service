@@ -3,6 +3,7 @@ from motor import motor_asyncio
 from arq import ArqRedis, create_pool
 from arq.connections import RedisSettings
 from sanic import Sanic
+from sanic.config import Config
 
 mongo_client: motor_asyncio.AsyncIOMotorClient = None
 mongo_db: motor_asyncio.AsyncIOMotorDatabase = None
@@ -13,7 +14,7 @@ pg_db: databases.Database = None
 def create_app(config):
     global pg_db
     app = Sanic(name=config.NAME)
-    app.config.from_object(config)
+    app.config.update_config(config)
     pg_db = databases.Database(app.config['PG_URL'])
 
     app.listeners['after_server_start'].extend(
@@ -23,7 +24,7 @@ def create_app(config):
         [close_motor, close_arq, close_database])
 
     from .api.v1 import bpg
-    app.register_blueprint(bpg)
+    app.blueprint(bpg)
 
     return app
 

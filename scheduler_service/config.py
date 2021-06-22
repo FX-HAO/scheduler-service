@@ -18,6 +18,9 @@ class Config:
     MAX_TASKS = 10
     RESTFUL_JSON = {"cls": CustomJsonEncoder}
 
+    @classmethod
+    def to_dict(cls):
+        return dict(cls.__dict__)
 
 class TestConfig(Config):
     PG_URL = "postgresql://localhost/scheduler_test"

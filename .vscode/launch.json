@@ -1,0 +1,14 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "pytest",
+            "type": "python",
+            "request": "launch",
+            "module": "pytest",
+            "args": ["tests"],
+            "justMyCode": false,
+            "env": {"PYTHONPATH": "__pypackages__/<major.minor>/lib"}
+        }
+    ]
+}

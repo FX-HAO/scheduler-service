@@ -1,6 +1,6 @@
 [project]
-name = ""
-version = ""
+name = "scheduler-service"
+version = "0.1.0"
 description = ""
 authors = [
     {name = "CoCongV", email = "cong.lv.yx@gmail.com"},
@@ -23,6 +23,8 @@ dependencies = [
     "brotlipy~=0.7",
     "sanic-restful~=0.1",
     "Ipython~=7.24",
+    "nose~=1.3",
+    "psycopg2~=2.9",
 ]
 requires-python = ">=3.9"
 dynamic = ["classifiers"]
