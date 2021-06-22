@@ -1,51 +1,55 @@
-[tool.poetry]
-name = "scheduler-service"
-version = "0.1.0"
+[project]
+name = ""
+version = ""
 description = ""
-authors = ["FX-HAO <haofxpro@gmail.com> & CoCongV <cong.lv.yx@gmail.com>"]
-license = "MIT"
+authors = [
+    {name = "CoCongV", email = "cong.lv.yx@gmail.com"},
+]
+dependencies = [
+    "sanic~=21.3",
+    "aioredis~=1.3",
+    "click~=8.0",
+    "databases~=0.4",
+    "asyncpg~=0.23",
+    "orm~=0.1",
+    "passlib~=1.7",
+    "pyjwt~=2.1",
+    "arq~=0.20",
+    "motor~=2.4",
+    "aiohttp~=3.7",
+    "prompt-toolkit~=3.0",
+    "cchardet~=2.1",
+    "aiodns~=3.0",
+    "brotlipy~=0.7",
+    "sanic-restful~=0.1",
+    "Ipython~=7.24",
+]
+requires-python = ">=3.9"
+dynamic = ["classifiers"]
+license = {text = "MIT"}
 
-[tool.poetry.dependencies]
-python = "^3.7"
-sanic = "^19.9"
-aioredis = "^1.3"
-click = "^7.0"
-databases = "^0.2.6"
-asyncpg = "^0.19.0"
-orm = "^0.1.5"
-passlib = "^1.7"
-pyjwt = "^1.7"
-ipython = "^7.9"
-psycopg2-binary = "^2.8"
-arq = "^0.18.4"
-motor = "^2.1.0"
-aiohttp = "^3.6.2"
-prompt_toolkit = "2.0.10"
-cchardet = "^2.1.5"
-aiodns = "^2.0.0"
-brotlipy = "^0.7.0"
-sanic-restful = "^0.0.9"
+[project.urls]
+homepage = ""
 
-[tool.poetry.dev-dependencies]
-pylint = "^2.4"
-rope = "^0.14.0"
-requests = "^2.22.0"
-pytest-cov = "^2.8.1"
-pytest-sugar = "^0.9.2"
-pytest-mock = "^2.0.0"
-pytest = "^5.3.3"
-yapf = "^0.29.0"
-pytest-sanic = "^1.1.2"
-uvicorn = "^0.11.3"
 
-[[tool.poetry.source]]
-name = "ali"
-url = "https://mirrors.aliyun.com/pypi/simple/"
-
-[tool.poetry.scripts]
-scheduler-cli = "scheduler_service.manage:cli"
-
+[project.optional-dependencies]
 [build-system]
-requires = ["poetry>=0.12"]
-build-backend = "poetry.masonry.api"
+requires = ["pdm-pep517"]
+build-backend = "pdm.pep517.api"
 
+[tool]
+[tool.pdm]
+[tool.pdm.dev-dependencies]
+dev = [
+    "pylint~=2.8",
+    "rope~=0.19",
+    "requests~=2.25",
+    "pytest-cov~=2.12",
+    "pytest-sugar~=0.9",
+    "pytest-mock~=3.6",
+    "pytest~=6.2",
+    "yapf~=0.31",
+    "pytest-sanic~=1.7",
+    "uvicorn~=0.14",
+    "flake8~=3.9",
+]

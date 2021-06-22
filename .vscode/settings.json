@@ -1,5 +1,11 @@
 {
-    "python.pythonPath": "~/.cache/pypoetry/virtualenvs/scheduler-service-Ic6KrsGp-py3.8/bin/python",
+    "python.pythonPath": "/home/cong/.pyenv/shims/python",
+    "python.autoComplete.extraPaths": [
+        "__pypackages__/<major.minor>/lib"
+    ],
+    "python.analysis.extraPaths": [
+        "__pypackages__/<major.minor>/lib"
+    ],
     "python.linting.flake8Enabled": true,
     "python.formatting.provider": "yapf",
     "python.linting.pylintEnabled": true,
