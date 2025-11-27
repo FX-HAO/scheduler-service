@@ -1,5 +1,0 @@
--r common.txt
-
-nose
-coverage
-codeclimate-test-reporter
